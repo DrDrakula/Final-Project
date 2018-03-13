@@ -10,7 +10,7 @@ class App extends Component {
 
 
   toggleLoggedIn = () => {
-    this.props.logIn
+    this.props.logIn()
   }
 
   checkIfLogged = () => {
