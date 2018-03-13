@@ -1,0 +1,8 @@
+{
+  "name": "project-backend",
+  "private": true,
+  "dependencies": {
+    "react-redux": "^5.0.7",
+    "redux": "^3.7.2"
+  }
+}
