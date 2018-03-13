@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
     u = User.find_by(username: params[:username])
     if u && u.authenticate(params[:password])
       token = issue_token({ 'user_id': u.id })
-      render json: {'token': token }
+      render json: {'token': token, 'user_id': u.id }
     else
       render json: {'error': 'Could not find or authenticate user'}, status: 401
     end

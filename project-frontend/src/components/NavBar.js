@@ -6,6 +6,7 @@ const NavLink = (props) => {
   const onLogOutClick = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('username')
+    localStorage.removeItem('user_id')
     props.logOut()
   }
   console.log(props)

@@ -10,7 +10,7 @@ class UsersController < ApplicationController
     if @user.valid?
       @user.save
       token = issue_token({ 'user_id': @user.id })
-      render json: {'token': token }
+      render json: {'token': token, 'user_id': @user.id }
     else
       render json: {error: 'User already Exists'}
     end

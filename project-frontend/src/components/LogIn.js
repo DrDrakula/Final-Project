@@ -45,8 +45,10 @@ class LogIn extends React.Component {
           error: json.error
         })
       }else{
+        console.log(json)
         localStorage.setItem('token',json.token)
         localStorage.setItem('username',this.state.username)
+        localStorage.setItem('user_id',json.user_id)
         this.setState({
           username: '',
           password: '',
@@ -77,6 +79,7 @@ class LogIn extends React.Component {
       }else{
         localStorage.setItem('token',json.token)
         localStorage.setItem('username', this.state.username)
+        localStorage.setItem('user_id',json.user_id)
         this.setState({
           username: '',
           password: '',

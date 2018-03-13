@@ -7,7 +7,8 @@ class ChatRooms extends React.Component {
   state = {
     rooms: [],
     chatRoomTopic: '',
-    chatRoomPassword: ''
+    chatRoomPassword: '',
+    filterRooms: ''
   }
 
   fetchAllRooms = () => {
@@ -15,7 +16,7 @@ class ChatRooms extends React.Component {
     .then(res => res.json())
     .then(json => {
       this.setState({
-        rooms: json
+        rooms: json.chatrooms
       }, () => console.log(this.state.rooms))
     })
   }
@@ -29,9 +30,16 @@ class ChatRooms extends React.Component {
       chatRoomPassword: event.target.value
     })
   }
+
   handleTopicInput = (event) => {
     this.setState({
       chatRoomTopic: event.target.value
+    })
+  }
+
+  handleFilterInput = (event) => {
+    this.setState({
+      filterRooms: event.target.value
     })
   }
 
@@ -54,10 +62,11 @@ class ChatRooms extends React.Component {
     .then(res => res.json())
     .then(json => {
       console.log(json)
+      console.log(json.chatroom)
       this.setState({
         chatRoomTopic: '',
         chatRoomPassword: '',
-        rooms: [...this.state.rooms, json]
+        rooms: [...this.state.rooms, json.chatroom]
       })
     })
   }
@@ -70,7 +79,9 @@ class ChatRooms extends React.Component {
 
   render () {
     console.log(this.props)
-    this.state.rooms.forEach(room => console.log(room))
+
+    let sortedRooms = this.state.rooms.sort((a,b) => a.topic.localeCompare(b.topic))
+    let filteredRooms = sortedRooms.filter(room => room.topic.toLowerCase().includes(this.state.filterRooms.toLowerCase()))
     return(
       <div>
         <div className='container'>
@@ -86,9 +97,10 @@ class ChatRooms extends React.Component {
             </div>
             <input type='submit' value='create room'/>
           </form>
+          <input type='text' value={this.state.filterRooms} onChange={this.handleFilterInput} placeholder='Search for rooms'/>
         </div>
         <div>
-          {this.state.rooms.map(room => <h5 key={room.id}>{room.topic}</h5>)}
+          {this.state.rooms ? filteredRooms.map(room => <h5 key={room.id}>{room.topic}</h5>) : null}
         </div>
       </div>
     )
