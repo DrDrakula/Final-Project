@@ -1,12 +1,23 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import ChatRooms from './components/ChatRooms'
 import LogIn from './components/LogIn'
+import NavBar from './components/NavBar'
+import { connect } from 'react-redux'
+import { logIn, logOut } from './actions'
+
 class App extends Component {
 
-  state = {
-    loggedIn: false
+
+  toggleLoggedIn = () => {
+    this.props.logIn
+  }
+
+  checkIfLogged = () => {
+    const token = localStorage.getItem('token')
+    if(token){
+      this.props.logIn()
+    }
   }
 
   fetchAbout = () => {
@@ -17,19 +28,25 @@ class App extends Component {
 
   componentDidMount(){
     this.fetchAbout()
+    this.checkIfLogged()
   }
 
   render() {
+    console.log(this.props)
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <LogIn />
+        <NavBar/>
+        {this.props.loggedIn ? <ChatRooms /> : <LogIn loggedIn={this.toggleLoggedIn}/>}
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    ...state,
+    loggedIn: state.loggedIn
+  }
+}
+
+export default connect(mapStateToProps, {logIn, logOut})(App);

@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   # protect_from_forgery with: :exception
   protect_from_forgery with: :null_session
   # before_action :authenticate_user!
+  helper_method :current_user, :logged_in?
   private
 
   def issue_token(payload)
@@ -18,6 +19,10 @@ class ApplicationController < ActionController::Base
 
   def current_user
     @current_user ||= User.find_by(id: token_user_id)
+  end
+
+  def logged_in?
+    !!current_user
   end
 
   def token_user_id

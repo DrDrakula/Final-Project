@@ -1,8 +1,9 @@
 class MessagesController < ApplicationController
 
   def create
-    @message = Message.new(message_params)
-    @message.user = current_user
+    user_id = token_user_id
+    @message = Message.new(content: params[:content], chatroom_id: params[:chatroom_id], user_id: user_id)
+    # @message.user = current_user
     if @message.save
       ActionCable.server.broadcast 'messages',
         message: @message.content,

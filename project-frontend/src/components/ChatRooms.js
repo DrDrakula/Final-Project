@@ -1,8 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import ChatRoom from './ChatRoom'
 import {connect} from 'react-redux'
-import {allChatrooms, addChatRoom} from '../actions'
+import {allChatrooms, addChatRoom, logOut} from '../actions'
 
 class ChatRooms extends React.Component {
   state = {
@@ -63,20 +62,33 @@ class ChatRooms extends React.Component {
     })
   }
 
+  handleLogOutButton = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('username')
+    this.props.logOut()
+  }
+
   render () {
     console.log(this.props)
+    this.state.rooms.forEach(room => console.log(room))
     return(
       <div>
-        <div>
+        <div className='container'>
           <form onSubmit={this.handleSubmit}>
             <label>Create a new room:</label><br/>
-            <input type='text' onChange={this.handleTopicInput} value={this.state.chatRoomTopic} placeholder="Topic"/><br/>
-            <input type='password' onChange={this.handlePasswordInput} value={this.state.chatRoomPassword} placeholder="Password"/><br/>
+            <div className='row'>
+              <div className="input-field col s6">
+                <input type='text' onChange={this.handleTopicInput} value={this.state.chatRoomTopic} placeholder="Topic"/><br/>
+              </div>
+              <div className="input-field col s6">
+                <input type='password' onChange={this.handlePasswordInput} value={this.state.chatRoomPassword} placeholder="Password"/><br/>
+              </div>
+            </div>
             <input type='submit' value='create room'/>
           </form>
         </div>
         <div>
-          {this.state.rooms.map(room => <div key={room.id}><ChatRoom room={room} /></div>)}
+          {this.state.rooms.map(room => <h5 key={room.id}>{room.topic}</h5>)}
         </div>
       </div>
     )
@@ -89,11 +101,5 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addChatRoom: (room) => dispatch(addChatRoom(room)),
-    allChatrooms: (arr) => dispatch(allChatrooms(arr))
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatRooms);
+export default connect(mapStateToProps, {allChatrooms, addChatRoom, logOut})(ChatRooms);

@@ -1,4 +1,7 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { logIn, logOut } from '../actions'
+
 
 const LOGIN = "http://localhost:3000/login"
 const CREATE = "http://localhost:3000/users"
@@ -34,7 +37,23 @@ class LogIn extends React.Component {
         username: this.state.username,
         password: this.state.password
       })
-    }).then(res => res.json()).then(json => console.log(json))
+    })
+    .then(res => res.json())
+    .then(json => {
+      if(json.error){
+        this.setState({
+          error: json.error
+        })
+      }else{
+        localStorage.setItem('token',json.token)
+        localStorage.setItem('username',this.state.username)
+        this.setState({
+          username: '',
+          password: '',
+          error: ''
+        }, () => this.props.logIn())
+      }
+    })
   }
 
   createUser = (event) => {
@@ -56,8 +75,8 @@ class LogIn extends React.Component {
           error: json.error
         })
       }else{
-        console.log(json)
         localStorage.setItem('token',json.token)
+        localStorage.setItem('username', this.state.username)
         this.setState({
           username: '',
           password: '',
@@ -69,9 +88,15 @@ class LogIn extends React.Component {
 
   render () {
     return(
-      <div>
-        <input type='text' value={this.state.username} onChange={this.handleUsernameInput} placeholder='Username'/><br/>
-        <input type='password' value={this.state.password} onChange={this.handlePasswordInput} placeholder='Password'/><br/>
+      <div className='container'>
+        <div className='row'>
+          <div className="input-field col s6">
+            <input type='text' value={this.state.username} onChange={this.handleUsernameInput} placeholder='Username'/><br/>
+          </div>
+          <div className="input-field col s6">
+            <input type='password' value={this.state.password} onChange={this.handlePasswordInput} placeholder='Password'/><br/>
+          </div>
+        </div>
         <button onClick={this.logIn}>Log In</button>
         <button onClick={this.createUser}>Create User</button>
       </div>
@@ -79,4 +104,11 @@ class LogIn extends React.Component {
   }
 }
 
-export default LogIn;
+const mapStateToProps = (state) => {
+  return {
+    ...state,
+    loggedIn: state.loggedIn
+  }
+}
+
+export default connect(mapStateToProps, {logIn, logOut})(LogIn);;

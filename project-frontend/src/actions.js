@@ -13,3 +13,17 @@ export function addChatRoom(chatRoom){
     payload: chatRoom
   }
 }
+
+export function logIn(){
+  console.log('Loging in')
+  return {
+    type: 'LOG_IN',
+  }
+}
+
+export function logOut(){
+  console.log('Loging out')
+  return {
+    type: 'LOG_OUT',
+  }
+}
