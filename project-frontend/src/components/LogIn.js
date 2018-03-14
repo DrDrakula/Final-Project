@@ -84,7 +84,7 @@ class LogIn extends React.Component {
           username: '',
           password: '',
           error: ''
-        })
+        }, () => this.props.logIn())
       }
     })
   }
@@ -102,6 +102,13 @@ class LogIn extends React.Component {
         </div>
         <button onClick={this.logIn}>Log In</button>
         <button onClick={this.createUser}>Create User</button>
+        {this.state.error ?
+        <div>
+          <ul>
+            <li>{this.state.error}</li>
+          </ul>
+        </div>
+        : null}
       </div>
     )
   }
