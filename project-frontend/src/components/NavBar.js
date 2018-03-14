@@ -7,6 +7,7 @@ const NavLink = (props) => {
     localStorage.removeItem('token')
     localStorage.removeItem('username')
     localStorage.removeItem('user_id')
+    localStorage.removeItem('chatroom_id')
     props.leaveChatRoom(props.currentChatRoom)
     props.logOut()
   }
