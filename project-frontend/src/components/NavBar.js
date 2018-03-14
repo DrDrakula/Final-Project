@@ -1,12 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { logOut } from '../actions'
+import { logOut, leaveChatRoom } from '../actions'
 
 const NavLink = (props) => {
   const onLogOutClick = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('username')
     localStorage.removeItem('user_id')
+    props.leaveChatRoom(props.currentChatRoom)
     props.logOut()
   }
   console.log(props)
@@ -26,8 +27,9 @@ const NavLink = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn: state.loggedIn
+    loggedIn: state.loggedIn,
+    currentChatRoom: state.currentChatRoom
   }
 }
 
-export default connect(mapStateToProps, {logOut})(NavLink)
+export default connect(mapStateToProps, {logOut, leaveChatRoom})(NavLink)
