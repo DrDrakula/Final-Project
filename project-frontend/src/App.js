@@ -3,8 +3,10 @@ import './App.css';
 import ChatRooms from './components/ChatRooms'
 import LogIn from './components/LogIn'
 import NavBar from './components/NavBar'
+import {Switch, Route, withRouter} from 'react-router-dom'
 import { connect } from 'react-redux'
-import { logIn, logOut } from './actions'
+import { getAllChatRooms,logIn, logOut } from './actions'
+import ChatRoomContainer from './components/ChatRoomContainer'
 
 class App extends Component {
 
@@ -29,14 +31,23 @@ class App extends Component {
   componentDidMount(){
     this.fetchAbout()
     this.checkIfLogged()
-  }
+    this.props.getAllChatRooms()
 
+  }
   render() {
     console.log(this.props)
     return (
       <div className="App">
         <NavBar/>
-        {this.props.loggedIn ? <ChatRooms /> : <LogIn loggedIn={this.toggleLoggedIn}/>}
+          <Switch>
+            <Route exact path='/' render={() => {return this.props.loggedIn ? <ChatRooms /> : <LogIn loggedIn={this.toggleLoggedIn} />}} />
+            <Route path='/chatrooms/:slug' render={(routerProps)=>
+                {
+                  console.log("DOGGG")
+                  return <ChatRoomContainer {...routerProps}/>}
+                }
+            />
+          </Switch>
       </div>
     );
   }
@@ -49,4 +60,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, {logIn, logOut})(App);
+export default withRouter(connect(mapStateToProps, {logIn, logOut, getAllChatRooms})(App));

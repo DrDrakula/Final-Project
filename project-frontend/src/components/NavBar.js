@@ -1,8 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { logOut, leaveChatRoom } from '../actions'
+import { NavLink } from 'react-router-dom'
 
-const NavLink = (props) => {
+const NavBar = (props) => {
   const onLogOutClick = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('username')
@@ -17,11 +18,11 @@ const NavLink = (props) => {
   return (
     <nav>
       <div className="nav-wrapper">
-        {props.loggedIn ? <a className="brand-logo right">{localStorage.getItem('username')}</a> : null}
+        {props.loggedIn ? <NavLink className="brand-logo right" onClick={props.leaveChatRoom} to="/">{localStorage.getItem('username')}</NavLink> : null}
         <ul id="nav-mobile" className="left hide-on-med-and-down">
           <li><a>Sass</a></li>
           <li><a>Components</a></li>
-          <li>{props.loggedIn ? <a onClick={onLogOutClick}>Log Out</a> : <a>Log In</a>}</li>
+          <li>{props.loggedIn ? <NavLink to='/' onClick={onLogOutClick}>Log Out</NavLink> : <a>Log In</a>}</li>
         </ul>
       </div>
     </nav>
@@ -35,4 +36,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, {logOut, leaveChatRoom})(NavLink)
+export default connect(mapStateToProps, {logOut, leaveChatRoom})(NavBar)

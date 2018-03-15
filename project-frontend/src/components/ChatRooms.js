@@ -1,17 +1,15 @@
 import React from 'react'
 import ChatRoom from './ChatRoom'
 import {connect} from 'react-redux'
-import {getAllChatRooms, createChatRoom, logOut, enterChatRoom} from '../actions'
+import { createChatRoom, logOut } from '../actions'
+import {NavLink} from 'react-router-dom'
+
 
 class ChatRooms extends React.Component {
   state = {
     chatRoomTopic: '',
     chatRoomPassword: '',
     filterRooms: ''
-  }
-
-  componentDidMount(){
-    this.props.getAllChatRooms()
   }
 
   handlePasswordInput = (event) => {
@@ -69,9 +67,9 @@ class ChatRooms extends React.Component {
             <input type='submit' value='create room'/>
           </form>
           <input type='text' value={this.state.filterRooms} onChange={this.handleFilterInput} placeholder='Search for rooms'/>
-          <div>
-            {this.props.chatRooms ? filteredRooms.map(room => <h5 onClick={() => this.props.enterChatRoom(room)} key={room.id}>{room.topic}</h5>) : null}
-          </div>
+          <ul>
+            {this.props.chatRooms ? filteredRooms.map(room => <li key={room.id}><NavLink to={`/chatrooms/${room.slug}`}>{room.topic}</NavLink></li>) : null}
+          </ul>
         </div>
       :
       <ChatRoom />
@@ -88,4 +86,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, {getAllChatRooms, createChatRoom, logOut, enterChatRoom})(ChatRooms);
+export default connect(mapStateToProps, {createChatRoom, logOut})(ChatRooms);

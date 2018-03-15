@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Cable from 'actioncable'
+import { leaveChatRoom } from '../actions'
 class ChatRoom extends React.Component{
 
   state = {
@@ -24,29 +25,6 @@ class ChatRoom extends React.Component{
     this.setState({
       input: event.target.value
     })
-  }
-
-  sendMessage = (event) => {
-    event.preventDefault()
-    // fetch('http://localhost:3000/messages', {
-    //   method: 'POST',
-    //   headers:{
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //     content: this.state.input,
-    //     user_id: localStorage.getItem('user_id'),
-    //     chatroom_id: this.props.currentChatRoom.id
-    //   })
-    // })
-    // .then(res => res.json())
-    // .then(json => {
-    //   console.log(json.message)
-    //   this.setState({
-    //     input: '',
-    //     roomsMessages: [...this.state.roomsMessages, json.message]
-    //   })
-    // })
   }
 
   componentWillMount() {
@@ -80,17 +58,6 @@ class ChatRoom extends React.Component{
     });
   }
 
-  // renderChatLog() {
-  //   return this.state.chatLogs.map((el) => {
-  //     return (
-  //       <li key={`chat_${el.id}`}>
-  //         <span className='chat-message'>{ el.content }</span>
-  //         <span className='chat-created-at'>{ el.created_at }</span>
-  //       </li>
-  //     );
-  //   });
-  // }
-
   handleSendEvent(event) {
     event.preventDefault();
     this.chats.create(this.state.input);
@@ -100,7 +67,7 @@ class ChatRoom extends React.Component{
   }
 
   render(){
-
+    console.log(this.props)
     return (
       <div>
         <h5>{this.props.currentChatRoom.topic}</h5>
@@ -126,4 +93,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(ChatRoom)
+export default connect(mapStateToProps, {leaveChatRoom})(ChatRoom)
