@@ -37,13 +37,12 @@ class App extends Component {
   render() {
     console.log(this.props)
     return (
-      <div className="App">
+      <div>
         <NavBar/>
           <Switch>
             <Route exact path='/' render={() => {return this.props.loggedIn ? <ChatRooms /> : <LogIn loggedIn={this.toggleLoggedIn} />}} />
             <Route path='/chatrooms/:slug' render={(routerProps)=>
                 {
-                  console.log("DOGGG")
                   return <ChatRoomContainer {...routerProps}/>}
                 }
             />

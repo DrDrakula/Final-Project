@@ -6,7 +6,9 @@ class ChatRoom extends React.Component{
 
   state = {
     roomsMessages: [],
-    input: ''
+    input: '',
+    passwordInput: '',
+    approved: true
   }
 
   getAllMessages = (chatRoomId) => {
@@ -24,6 +26,12 @@ class ChatRoom extends React.Component{
   handleInput = (event) => {
     this.setState({
       input: event.target.value
+    })
+  }
+
+  handlePasswordInput = (event) => {
+    this.setState({
+      passwordInput: event.target.value
     })
   }
 
@@ -58,7 +66,7 @@ class ChatRoom extends React.Component{
     });
   }
 
-  handleSendEvent(event) {
+  handleSendEvent = (event) => {
     event.preventDefault();
     this.chats.create(this.state.input);
     this.setState({
@@ -66,21 +74,44 @@ class ChatRoom extends React.Component{
     });
   }
 
+  handleJoinRoom = (event) => {
+    event.preventDefault()
+    if(this.state.passwordInput === this.props.currentChatRoom.password){
+      this.setState({
+        approved: true,
+        passwordInput: ''
+      })
+    }
+  }
+
   render(){
-    console.log(this.props)
     return (
       <div>
-        <h5>{this.props.currentChatRoom.topic}</h5>
         <div>
-          <ul>
-            {this.state.roomsMessages.map(message => <li key={message.id}><strong>{message.username ? message.username : message.user.username}:</strong> {message.content}</li>)}
-          </ul>
-        </div>
-        <div>
-          <form onSubmit={(e) => this.handleSendEvent(e)}>
-            <input type='text' value={this.state.input} onChange={this.handleInput} placeholder='Type here...'/>
-            <input type='submit'/>
+          <h5>{this.props.currentChatRoom.topic}</h5>
+          {this.state.approved ?
+          <div className='row'>
+            <div className='col s8'>
+              <img className='responsive-img' src={require('../yt.jpg')} height='500'/>
+            </div>
+            <div className='col s4'>
+              <ul>
+                {this.state.roomsMessages.map(message => <li key={message.id}><strong>{message.username ? message.username : message.user.username}:</strong> {message.content}</li>)}
+              </ul>
+            </div>
+            <div className='col s4 offset-s8'>
+              <form onSubmit={(e) => this.handleSendEvent(e)}>
+                <input type='text' value={this.state.input} onChange={this.handleInput} placeholder='Type here...'/>
+                <input type='submit' value='Send Message'/>
+              </form>
+            </div>
+          </div>
+          :
+          <form onSubmit={this.handleJoinRoom}>
+            <input type='password' placeholder='Password' value={this.state.passwordInput} onChange={this.handlePasswordInput}/>
+            <input type='submit' value='Join'/>
           </form>
+          }
         </div>
       </div>
     )
