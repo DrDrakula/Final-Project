@@ -19,7 +19,11 @@ class ChatRoom extends React.Component{
       console.log(json.messages)
       this.setState({
         roomsMessages: json.messages.filter(message => message.chatroom.id === this.props.currentChatRoom.id)
-      }, () => console.log(this.state.roomsMessages))
+      }, () => {
+        let element = document.getElementById("chatList");
+        element.scrollTop = element.scrollHeight;
+        console.log(this.state.roomsMessages)
+      })
     })
   }
 
@@ -47,13 +51,15 @@ class ChatRoom extends React.Component{
   createSocket() {
     let cable = Cable.createConsumer('ws://localhost:3000/cable');
     this.chats = cable.subscriptions.create({
-      channel: 'MessagesChannel'
+      channel: 'MessagesChannel',
     }, {
       connected: () => {},
       received: (data) => {
         let roomsMessages = this.state.roomsMessages
         roomsMessages.push(data)
         this.setState({ roomsMessages: roomsMessages })
+        let element = document.getElementById("chatList");
+        element.scrollTop = element.scrollHeight;
         console.log(data);
       },
       create: function(chatContent) {
@@ -88,18 +94,18 @@ class ChatRoom extends React.Component{
     return (
       <div>
         <div>
-          <h5>{this.props.currentChatRoom.topic}</h5>
+          <h5 className='App'>{this.props.currentChatRoom.topic}</h5>
           {this.state.approved ?
           <div className='row'>
             <div className='col s8'>
-              <img className='responsive-img' src={require('../yt.jpg')} height='500'/>
+              <img alt='yt' className='responsive-img' src={require('../yt.jpg')} height='500'/>
             </div>
-            <div className='col s4'>
+            <div className='col s4' id='chatList'>
               <ul>
                 {this.state.roomsMessages.map(message => <li key={message.id}><strong>{message.username ? message.username : message.user.username}:</strong> {message.content}</li>)}
               </ul>
             </div>
-            <div className='col s4 offset-s8'>
+            <div className='col s4' id='messageInput'>
               <form onSubmit={(e) => this.handleSendEvent(e)}>
                 <input type='text' value={this.state.input} onChange={this.handleInput} placeholder='Type here...'/>
                 <input type='submit' value='Send Message'/>

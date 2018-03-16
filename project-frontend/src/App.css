@@ -28,6 +28,16 @@
 }
 
 
-.row ss {
-  line-height: 14px;
+#chatList {
+  word-wrap: break-word;
+  overflow: scroll;
+  overscroll-behavior-y: contain;
+  max-height: 300px;
+}
+
+#messageInput {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-bottom: 5%;
 }
