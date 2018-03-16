@@ -3,7 +3,7 @@ import './App.css';
 import ChatRooms from './components/ChatRooms'
 import LogIn from './components/LogIn'
 import NavBar from './components/NavBar'
-import {Switch, Route, withRouter} from 'react-router-dom'
+import {Switch, Route, withRouter, Redirect} from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getAllChatRooms,logIn, logOut } from './actions'
 import ChatRoomContainer from './components/ChatRoomContainer'
@@ -40,12 +40,13 @@ class App extends Component {
       <div>
         <NavBar/>
           <Switch>
-            <Route exact path='/' render={() => {return this.props.loggedIn ? <ChatRooms /> : <LogIn loggedIn={this.toggleLoggedIn} />}} />
             <Route path='/chatrooms/:slug' render={(routerProps)=>
                 {
-                  return <ChatRoomContainer {...routerProps}/>}
+                  return this.props.loggedIn ? <ChatRoomContainer {...routerProps}/> : <Redirect to='/'/>}
                 }
             />
+            <Route path='/chatrooms' render={() => {return this.props.loggedIn ? <ChatRooms/> : <Redirect to='/'/>}}/>
+            <Route exact path='/' render={() => {return this.props.loggedIn ? <Redirect to='/chatrooms'/> : <LogIn/>}} />
           </Switch>
       </div>
     );
