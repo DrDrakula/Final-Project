@@ -55,12 +55,14 @@ class ChatRoom extends React.Component{
     }, {
       connected: () => {},
       received: (data) => {
-        let roomsMessages = this.state.roomsMessages
-        roomsMessages.push(data)
-        this.setState({ roomsMessages: roomsMessages })
-        let element = document.getElementById("chatList");
-        element.scrollTop = element.scrollHeight;
-        console.log(data);
+        if(data.chatroom_id === this.props.currentChatRoom.id){
+          let roomsMessages = this.state.roomsMessages
+          roomsMessages.push(data)
+          this.setState({ roomsMessages: roomsMessages })
+          let element = document.getElementById("chatList");
+          element.scrollTop = element.scrollHeight;
+          console.log(data);
+        }
       },
       create: function(chatContent) {
         this.perform('create', {

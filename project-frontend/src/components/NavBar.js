@@ -21,7 +21,7 @@ const NavBar = (props) => {
         {props.loggedIn ? <NavLink className="brand-logo right" onClick={props.leaveChatRoom} to="/">{localStorage.getItem('username')}</NavLink> : null}
         <ul id="nav-mobile" className="left hide-on-med-and-down">
           <li><a>Sass</a></li>
-          <li><NavLink to='/chatrooms' onClick={props.leaveChatRoom}>Chatrooms</NavLink></li>
+          <li><NavLink to='/' onClick={props.leaveChatRoom}>Chatrooms</NavLink></li>
           <li>{props.loggedIn ? <NavLink to='/' onClick={onLogOutClick}>Log Out</NavLink> : <NavLink to='/'>Log In</NavLink>}</li>
         </ul>
       </div>

@@ -40,13 +40,12 @@ class App extends Component {
       <div>
         <NavBar/>
           <Switch>
+            <Route exact path='/' render={() => {return this.props.loggedIn ? <ChatRooms /> : <LogIn loggedIn={this.toggleLoggedIn} />}} />
             <Route path='/chatrooms/:slug' render={(routerProps)=>
                 {
-                  return this.props.loggedIn ? <ChatRoomContainer {...routerProps}/> : <Redirect to='/'/>}
+                  return <ChatRoomContainer {...routerProps}/>}
                 }
             />
-            <Route path='/chatrooms' render={() => {return this.props.loggedIn ? <ChatRooms/> : <Redirect to='/'/>}}/>
-            <Route exact path='/' render={() => {return this.props.loggedIn ? <Redirect to='/chatrooms'/> : <LogIn/>}} />
           </Switch>
       </div>
     );
