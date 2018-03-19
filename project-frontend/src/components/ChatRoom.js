@@ -2,8 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { leaveChatRoom } from '../actions'
 import { ActionCable } from 'react-actioncable-provider'
-import videojs from 'video.js'
-
+import CurrentVideo from './CurrentVideo'
 
 class ChatRoom extends React.Component{
 
@@ -42,6 +41,7 @@ class ChatRoom extends React.Component{
   componentDidMount(){
     localStorage.setItem('chatroom_id', this.props.currentChatRoom.id)
     this.getAllMessages(this.props.currentChatRoom.id)
+
   }
 
   handleSocketResponse = (data) => {
@@ -49,7 +49,6 @@ class ChatRoom extends React.Component{
     switch (data.type) {
       case 'ADD_MESSAGE':
           console.log(data)
-
           let roomsMessages = this.state.roomsMessages
           roomsMessages.push(data.payload)
     			this.setState({roomsMessages: roomsMessages})
@@ -104,6 +103,7 @@ class ChatRoom extends React.Component{
     }
   }
 
+
   render(){
     //<img alt='yt' className='responsive-img' src={require('../yt.jpg')} height='500'/>
     // <iframe height='500' width='900' title='*Try Not To Laugh Challenge* Funny Dogs Compilation - Funniest Dog Videos 2017' src={`https://www.youtube.com/embed/aEzZLXBH3rU`}/>
@@ -118,7 +118,7 @@ class ChatRoom extends React.Component{
           {this.state.approved ?
             <div className='row'>
               <div className='col s8'>
-                <iframe height='500' width='900' title='*Try Not To Laugh Challenge* Funny Dogs Compilation - Funniest Dog Videos 2017' src={`https://www.youtube.com/embed/aEzZLXBH3rU`}/>
+                <CurrentVideo />
               </div>
             <div className='col s4' id='chatList'>
                 <ul>
