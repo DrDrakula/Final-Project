@@ -3,13 +3,14 @@ import './App.css';
 import ChatRooms from './components/ChatRooms'
 import LogIn from './components/LogIn'
 import NavBar from './components/NavBar'
-import {Switch, Route, withRouter, Redirect} from 'react-router-dom'
+import {Switch, Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getAllChatRooms,logIn, logOut } from './actions'
 import ChatRoomContainer from './components/ChatRoomContainer'
 
-class App extends Component {
+const API_KEY= 'GET THE KEY'
 
+class App extends Component {
 
   toggleLoggedIn = () => {
     this.props.logIn()
@@ -28,11 +29,19 @@ class App extends Component {
     .then(json => console.log(json))
   }
 
+  fetchVideos = () => {
+    fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&key=${API_KEY}&q=${'dogs'}&type=video`)
+		.then(res => res.json())
+		.then(videos => {
+			console.log(videos)
+		})
+  }
+
   componentDidMount(){
     this.fetchAbout()
     this.checkIfLogged()
     this.props.getAllChatRooms()
-
+    // this.fetchVideos()
   }
   render() {
     console.log(this.props)

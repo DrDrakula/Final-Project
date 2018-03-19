@@ -15,6 +15,33 @@ class ChatroomsController < ApplicationController
     end
   end
 
+  def add_message
+    chatroom = Chatroom.find(params[:chatroom_id])
+    user = User.find(params[:user_id])
+
+    if chatroom && user
+      message = Message.create(content: params[:content], chatroom_id: chatroom.id, user_id: user.id)
+      ChatroomChannel.broadcast_to(chatroom, {
+        type: 'ADD_MESSAGE',
+        payload: prepare_message(message)
+      })
+
+      render json: prepare_message(message)
+    else
+      render json: {error: 'There was an error in sending your message'}
+    end
+  end
+
+  def prepare_message(message)
+    message_hash = {
+      id: message.id,
+      content: message.content,
+      username: message.user.username,
+      user_id: message.user.id,
+      created_at: message.created_at.strftime('%H:%M')
+    }
+  end
+
   def show
     @chatroom = Chatroom.find_by(slug: params[:slug])
     render json: @chatroom

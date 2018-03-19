@@ -100,8 +100,10 @@ class LogIn extends React.Component {
             <input type='password' value={this.state.password} onChange={this.handlePasswordInput} placeholder='Password'/><br/>
           </div>
         </div>
-        <button onClick={this.logIn}>Log In</button>
-        <button onClick={this.createUser}>Create User</button>
+        <div className="App">
+          <button onClick={this.logIn}>Log In</button>
+          <button onClick={this.createUser}>Create User</button>
+        </div>
         {this.state.error ?
         <div>
           <ul>

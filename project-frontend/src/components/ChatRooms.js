@@ -55,7 +55,7 @@ class ChatRooms extends React.Component {
         {!this.props.currentChatRoom ?
         <div className='container'>
           <form onSubmit={this.handleSubmit}>
-            <h5>Create a new ChatRoom</h5><br/>
+            <h5 className="App">Create a new ChatRoom</h5><br/>
             <div className='row'>
               <div className="input-field col s6">
                 <input type='text' onChange={this.handleTopicInput} value={this.state.chatRoomTopic} placeholder="Topic"/><br/>
@@ -67,9 +67,9 @@ class ChatRooms extends React.Component {
             <input type='submit' value='create room'/>
           </form>
           <br/>
-          <h5>Join an existing ChatRoom</h5>
-          <input type='text' value={this.state.filterRooms} onChange={this.handleFilterInput} placeholder='Search for rooms'/>
-          <ul className='collection'>
+          <h5 className="App">Join an existing ChatRoom</h5>
+          <input type='text' className="App" value={this.state.filterRooms} onChange={this.handleFilterInput} placeholder='Search for rooms'/>
+          <ul className='collection App'>
             {this.props.chatRooms ? filteredRooms.map(room => <li className='collection-item' key={room.id}><NavLink to={`/chatrooms/${room.slug}`}>{room.topic}</NavLink></li>) : null}
           </ul>
         </div>

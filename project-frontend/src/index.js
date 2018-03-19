@@ -8,6 +8,8 @@ import thunk from 'redux-thunk'
 import root from './reducers/root'
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter } from 'react-router-dom'
+import { ActionCableProvider } from 'react-actioncable-provider'
+
 
 const store = createStore(root, applyMiddleware(thunk))
 console.log(store)
@@ -15,7 +17,9 @@ console.log(store)
 ReactDOM.render(
     <Provider store={store}>
       <BrowserRouter>
-        <App />
+        <ActionCableProvider url='ws://localhost:3000/cable'>
+          <App />
+        </ActionCableProvider>
       </BrowserRouter>
     </Provider>
   , document.getElementById('root')

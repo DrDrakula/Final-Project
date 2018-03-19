@@ -32,7 +32,7 @@
   word-wrap: break-word;
   overflow: scroll;
   overscroll-behavior-y: contain;
-  max-height: 300px;
+  max-height: 400px;
 }
 
 #messageInput {

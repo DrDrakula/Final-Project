@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   delete '/logout', to: "sessions#destroy"
 
   get 'users/:id', to: "users#show", as: "profile"
+  post '/chatrooms/:chatroom_id/add_message', to: 'chatrooms#add_message'
+
 
   # Serve websocket cable requests in-process
   mount ActionCable.server => '/cable'
