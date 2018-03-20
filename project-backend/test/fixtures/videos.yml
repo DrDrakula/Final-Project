@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  played: 1.5
+  playedSeconds: 1.5
+  playing: false
+  url: MyString
+
+two:
+  played: 1.5
+  playedSeconds: 1.5
+  playing: false
+  url: MyString

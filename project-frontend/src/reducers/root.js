@@ -12,7 +12,6 @@ export default function root(state = defaultState, action){
   switch(action.type){
 
     case GET_ALL_CHATROOMS:
-      console.log(action.payload)
       return {
         ...state, chatRooms: action.payload
       }

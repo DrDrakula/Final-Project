@@ -48,13 +48,13 @@ class ChatRoom extends React.Component{
 
     switch (data.type) {
       case 'ADD_MESSAGE':
-          console.log(data)
-          let roomsMessages = this.state.roomsMessages
-          roomsMessages.push(data.payload)
-    			this.setState({roomsMessages: roomsMessages})
-       		break;
-      case "DELETE_MESSAGE":
-       		break;
+        console.log(data)
+        let roomsMessages = this.state.roomsMessages
+        roomsMessages.push(data.payload)
+  			this.setState({roomsMessages: roomsMessages})
+     		break;
+      case 'CONTROL_VIDEO':
+     		break;
       default:
         console.log(data);
     }

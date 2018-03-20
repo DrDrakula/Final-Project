@@ -47,7 +47,6 @@ class ChatRooms extends React.Component {
   }
 
   render () {
-    console.log(this.props)
     let sortedRooms = this.props.chatRooms.sort((a,b) => a.topic.localeCompare(b.topic))
     let filteredRooms = sortedRooms.filter(room => room.topic.toLowerCase().includes(this.state.filterRooms.toLowerCase()))
     return(

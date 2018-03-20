@@ -6,6 +6,8 @@ import { findDOMNode } from 'react-dom'
 import { hot } from 'react-hot-loader'
 import screenfull from 'screenfull'
 import { version } from '../../package.json'
+import { connect } from 'react-redux'
+import { ActionCable } from 'react-actioncable-provider'
 
 
 class CurrentVideo extends React.Component {
@@ -22,6 +24,38 @@ class CurrentVideo extends React.Component {
     played: 0,
     playedSeconds: 0
   }
+
+  handleSocketResponse = (data) => {
+    switch (data.type) {
+      case 'PAUSE_VIDEO':
+        console.log(data)
+        this.setState({playing: false})
+        break;
+      case 'PLAY_VIDEO':
+        this.setState({playing: true})
+        break;
+      default:
+        console.log(data);
+    }
+  };
+
+  getVideo = () => {
+    fetch('http://localhost:3000/chatrooms')
+    .then(res => res.json())
+    .then(json => {
+      console.log(json)
+      let currentRoom = json.chatrooms.find(room => room.id = this.props.currentChatRoom.id)
+      this.currentRoomVideo = currentRoom.video
+      this.setState({
+        url: this.currentRoomVideo.url,
+        playing: this.currentRoomVideo.playing,
+        played: this.currentRoomVideo.played,
+        playedSeconds: this.currentRoomVideo.playedSeconds
+      }, () => this.player.seekTo(this.state.playedSeconds))
+    })
+  }
+
+
   load = url => {
     this.setState({
       url,
@@ -49,11 +83,41 @@ class CurrentVideo extends React.Component {
   }
   onPlay = () => {
     console.log('onPlay')
-    this.setState({ playing: true })
+    this.setState({ playing: true }, () => {
+      fetch(`http://localhost:3000/chatrooms/${this.props.currentChatRoom.id}/play_video`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: {
+          playing: this.state.playing
+        }
+      })
+      .then(res => res.json())
+      .then(json => {
+        console.log(json)
+        console.log(this.state.playing)
+      })
+    })
   }
   onPause = () => {
     console.log('onPause')
-    this.setState({ playing: false })
+    this.setState({ playing: false }, () => {
+      fetch(`http://localhost:3000/chatrooms/${this.props.currentChatRoom.id}/pause_video`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: {
+          playing: this.state.playing
+        }
+      })
+      .then(res => res.json())
+      .then(json => {
+        console.log(json)
+        console.log(this.state.playing)
+      })
+    })
   }
   onSeekMouseDown = e => {
     this.setState({ seeking: true })
@@ -63,7 +127,24 @@ class CurrentVideo extends React.Component {
   }
   onSeekMouseUp = e => {
     this.setState({ seeking: false })
-    this.player.seekTo(parseFloat(e.target.value))
+    e.persist()
+    // fetch(`http://localhost:3000/chatrooms/${this.props.currentChatRoom.id}/controll_video`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: {
+    //     url: this.state.url,
+    //     played: parseFloat(e.target.value),
+    //     playedSeconds: this.state.playedSeconds,
+    //     playing: this.state.playing
+    //   }
+    // })
+    // .then(res => res.json())
+    // .then(json => {
+      console.log(parseFloat(e.target.value))
+      this.player.seekTo(parseFloat(e.target.value))
+    // })
   }
   onProgress = state => {
     console.log('onProgress', state)
@@ -100,6 +181,10 @@ class CurrentVideo extends React.Component {
 
     return (
       <div className='app'>
+        <ActionCable
+          channel={{ channel: 'VideoChannel', video_id: this.props.currentChatRoom.video.id }}
+          onReceived={this.handleSocketResponse}
+        />
         <section className='section'>
           <div className='player-wrapper'>
             <ReactPlayer
@@ -113,7 +198,7 @@ class CurrentVideo extends React.Component {
               playbackRate={playbackRate}
               volume={volume}
               muted={muted}
-              onReady={() => this.player.seekTo(this.state.playedSeconds)}
+              onReady={() => this.getVideo()}
               onStart={() => console.log('onStart')}
               onPlay={this.onPlay}
               onPause={this.onPause}
@@ -191,4 +276,11 @@ class CurrentVideo extends React.Component {
   }
 }
 
-export default CurrentVideo;
+const mapStateToProps = (state) => {
+  return {
+    chatRooms: state.chatRooms,
+    currentChatRoom: state.currentChatRoom
+  }
+}
+
+export default connect(mapStateToProps)(CurrentVideo);

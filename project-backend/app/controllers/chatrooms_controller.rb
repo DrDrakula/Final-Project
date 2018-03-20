@@ -5,11 +5,14 @@ class ChatroomsController < ApplicationController
     render json: @chatrooms
   end
 
+
   def create
     @chatroom = Chatroom.new(chatroom_params)
     if @chatroom.valid?
       @chatroom.save
+      @video = Video.create(url: 'https://www.youtube.com/watch?v=cmpRLQZkTb8', played: 0, playedSeconds: 0, playing: true, chatroom_id: @chatroom.id)
       render json: @chatroom
+      # render json: {chatroom: @chatroom, video: @video}
     else
       render json: {error: 'A Chatroom with this topic already exists'}
     end
@@ -32,6 +35,40 @@ class ChatroomsController < ApplicationController
     end
   end
 
+  def pause_video
+    chatroom = Chatroom.find(params[:chatroom_id])
+    # user = User.find(params[:user_id])
+
+    if chatroom
+      video = Video.find(chatroom.video.id)
+      video.update(playing: !video.playing)
+      VideoChannel.broadcast_to(video, {
+        type: 'PAUSE_VIDEO',
+        payload: prepare_video(video)
+      })
+      render json: video
+    else
+      render json: {error: 'There was an error in pausing your video'}
+    end
+  end
+
+  def play_video
+    chatroom = Chatroom.find(params[:chatroom_id])
+    # user = User.find(params[:user_id])
+
+    if chatroom
+      video = Video.find(chatroom.video.id)
+      video.update(playing: !video.playing)
+      VideoChannel.broadcast_to(video, {
+        type: 'PLAY_VIDEO',
+        payload: prepare_video(video)
+      })
+      render json: video
+    else
+      render json: {error: 'There was an error in playing your video'}
+    end
+  end
+
   def prepare_message(message)
     message_hash = {
       id: message.id,
@@ -39,6 +76,12 @@ class ChatroomsController < ApplicationController
       username: message.user.username,
       user_id: message.user.id,
       created_at: message.created_at.strftime('%H:%M')
+    }
+  end
+
+  def prepare_video(video)
+    video_hash = {
+      playing: video.playing
     }
   end
 

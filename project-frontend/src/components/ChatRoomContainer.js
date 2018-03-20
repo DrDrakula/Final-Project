@@ -14,12 +14,9 @@ class ChatRoomContainer extends React.Component {
 
   checkIfFound = (props) => {
     let found = props.chatRooms.find(cr => {
-      console.log(props.match.params.slug)
       return cr.slug === props.match.params.slug
     })
-    console.log(props.currentChatRoom)
     if (found && !props.currentChatRoom){
-      console.log(found)
       this.props.enterChatRoom(found)
     }
   }

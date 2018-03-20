@@ -1,6 +1,7 @@
 class Chatroom < ApplicationRecord
   has_many :messages, dependent: :destroy
   has_many :users, through: :messages
+  has_one :video
   validates :topic, presence: true, uniqueness: true
   validates :password, presence: true
   before_validation :sanitize, :slugify

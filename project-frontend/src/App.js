@@ -44,7 +44,6 @@ class App extends Component {
     // this.fetchVideos()
   }
   render() {
-    console.log(this.props)
     return (
       <div>
         <NavBar/>

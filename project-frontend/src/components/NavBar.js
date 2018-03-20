@@ -14,7 +14,6 @@ const NavBar = (props) => {
     }
     props.logOut()
   }
-  console.log(props)
   return (
     <nav>
       <div className="nav-wrapper">
