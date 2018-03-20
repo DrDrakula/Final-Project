@@ -28,7 +28,6 @@ class ChatroomsController < ApplicationController
         type: 'ADD_MESSAGE',
         payload: prepare_message(message)
       })
-
       render json: prepare_message(message)
     else
       render json: {error: 'There was an error in sending your message'}
@@ -53,7 +52,6 @@ class ChatroomsController < ApplicationController
 
   def play_video
     chatroom = Chatroom.find(params[:chatroom_id])
-
     if chatroom
       video = Video.find(chatroom.video.id)
       video.update(playing: !video.playing)
@@ -69,11 +67,9 @@ class ChatroomsController < ApplicationController
 
   def control_video
     chatroom = Chatroom.find(params[:chatroom_id])
-
     if chatroom
       video = Video.find(chatroom.video.id)
       video.update(played: params[:played])
-      # byebug
       VideoChannel.broadcast_to(video, {
         type: 'CONTROL_VIDEO',
         payload: prepare_controls_for_video(video)
@@ -81,6 +77,21 @@ class ChatroomsController < ApplicationController
       render json: video
     else
       render json: {error: 'There was an error in playing your video'}
+    end
+  end
+
+  def change_video
+    chatroom = Chatroom.find(params[:chatroom_id])
+    if chatroom
+      video = Video.find(chatroom.video.id)
+      video.update(url: params[:url])
+      VideoChannel.broadcast_to(video, {
+        type: 'CHANGE_VIDEO',
+        payload: prepare_change_video(video)
+      })
+      render json: video
+    else
+      render json: {error: 'There was an error in changing your video'}
     end
   end
 
@@ -103,6 +114,12 @@ class ChatroomsController < ApplicationController
   def prepare_controls_for_video(video)
     video_hash = {
       played: video.played
+    }
+  end
+
+  def prepare_change_video(video)
+    video_hash = {
+      url: video.url
     }
   end
 

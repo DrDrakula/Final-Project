@@ -28,15 +28,16 @@ class CurrentVideo extends React.Component {
   handleSocketResponse = (data) => {
     switch (data.type) {
       case 'PAUSE_VIDEO':
-        console.log(data)
         this.setState({playing: false})
         break;
       case 'PLAY_VIDEO':
         this.setState({playing: true})
         break;
       case 'CONTROL_VIDEO':
-        console.log('Control Video',data)
         this.player.seekTo(data.payload.played)
+        break;
+      case 'CHANGE_VIDEO':
+        this.setState({url: data.payload.url})
         break;
       default:
         console.log(data);
@@ -67,6 +68,23 @@ class CurrentVideo extends React.Component {
       loaded: 0
     })
   }
+
+  onLoadPress = (url) => {
+    this.setState({
+      url: url
+    }, () => {
+      fetch(`http://localhost:3000/chatrooms/${this.props.currentChatRoom.id}/change_video`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          url: this.state.url
+        })
+      })
+    })
+  }
+
   playPause = () => {
     this.setState({ playing: !this.state.playing })
   }
@@ -93,9 +111,9 @@ class CurrentVideo extends React.Component {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: {
+        body: JSON.stringify({
           playing: this.state.playing
-        }
+        })
       })
     })
   }
@@ -108,9 +126,9 @@ class CurrentVideo extends React.Component {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: {
+        body: JSON.stringify({
           playing: this.state.playing
-        }
+        })
       })
     })
   }
@@ -133,6 +151,7 @@ class CurrentVideo extends React.Component {
       })
     })
   }
+
   onSeekMouseUp = e => {
     this.setState({ seeking: false })
     this.player.seekTo(parseFloat(e.target.value))
@@ -257,7 +276,7 @@ class CurrentVideo extends React.Component {
               <th>Custom URL</th>
               <td>
                 <input ref={input => { this.urlInput = input }} type='text' placeholder='Enter URL' />
-                <button onClick={() => this.setState({ url: this.urlInput.value })}>Load</button>
+                <button onClick={() => this.onLoadPress(this.urlInput.value)/*this.setState({ url: this.urlInput.value })*/}>Load</button>
               </td>
             </tr>
           </tbody></table>
