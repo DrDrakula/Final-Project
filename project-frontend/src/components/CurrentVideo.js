@@ -34,6 +34,10 @@ class CurrentVideo extends React.Component {
       case 'PLAY_VIDEO':
         this.setState({playing: true})
         break;
+      case 'CONTROL_VIDEO':
+        console.log('Control Video',data)
+        this.player.seekTo(data.payload.played)
+        break;
       default:
         console.log(data);
     }
@@ -93,13 +97,9 @@ class CurrentVideo extends React.Component {
           playing: this.state.playing
         }
       })
-      .then(res => res.json())
-      .then(json => {
-        console.log(json)
-        console.log(this.state.playing)
-      })
     })
   }
+
   onPause = () => {
     console.log('onPause')
     this.setState({ playing: false }, () => {
@@ -112,39 +112,30 @@ class CurrentVideo extends React.Component {
           playing: this.state.playing
         }
       })
-      .then(res => res.json())
-      .then(json => {
-        console.log(json)
-        console.log(this.state.playing)
-      })
     })
   }
+
   onSeekMouseDown = e => {
     this.setState({ seeking: true })
   }
   onSeekChange = e => {
-    this.setState({ played: parseFloat(e.target.value) })
+    let seekingFloat = parseFloat(e.target.value)
+    console.log('Seeking float',seekingFloat)
+    this.setState({ played: parseFloat(e.target.value) }, () => {
+      fetch(`http://localhost:3000/chatrooms/${this.props.currentChatRoom.id}/control_video`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          played: seekingFloat
+        })
+      })
+    })
   }
   onSeekMouseUp = e => {
     this.setState({ seeking: false })
-    e.persist()
-    // fetch(`http://localhost:3000/chatrooms/${this.props.currentChatRoom.id}/controll_video`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: {
-    //     url: this.state.url,
-    //     played: parseFloat(e.target.value),
-    //     playedSeconds: this.state.playedSeconds,
-    //     playing: this.state.playing
-    //   }
-    // })
-    // .then(res => res.json())
-    // .then(json => {
-      console.log(parseFloat(e.target.value))
-      this.player.seekTo(parseFloat(e.target.value))
-    // })
+    this.player.seekTo(parseFloat(e.target.value))
   }
   onProgress = state => {
     console.log('onProgress', state)
@@ -198,7 +189,7 @@ class CurrentVideo extends React.Component {
               playbackRate={playbackRate}
               volume={volume}
               muted={muted}
-              onReady={() => this.getVideo()}
+              onReady={() => /*this.getVideo()*/console.log('onReady')}
               onStart={() => console.log('onStart')}
               onPlay={this.onPlay}
               onPause={this.onPause}

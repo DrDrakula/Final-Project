@@ -37,7 +37,6 @@ class ChatroomsController < ApplicationController
 
   def pause_video
     chatroom = Chatroom.find(params[:chatroom_id])
-    # user = User.find(params[:user_id])
 
     if chatroom
       video = Video.find(chatroom.video.id)
@@ -54,7 +53,6 @@ class ChatroomsController < ApplicationController
 
   def play_video
     chatroom = Chatroom.find(params[:chatroom_id])
-    # user = User.find(params[:user_id])
 
     if chatroom
       video = Video.find(chatroom.video.id)
@@ -62,6 +60,23 @@ class ChatroomsController < ApplicationController
       VideoChannel.broadcast_to(video, {
         type: 'PLAY_VIDEO',
         payload: prepare_video(video)
+      })
+      render json: video
+    else
+      render json: {error: 'There was an error in playing your video'}
+    end
+  end
+
+  def control_video
+    chatroom = Chatroom.find(params[:chatroom_id])
+
+    if chatroom
+      video = Video.find(chatroom.video.id)
+      video.update(played: params[:played])
+      # byebug
+      VideoChannel.broadcast_to(video, {
+        type: 'CONTROL_VIDEO',
+        payload: prepare_controls_for_video(video)
       })
       render json: video
     else
@@ -82,6 +97,12 @@ class ChatroomsController < ApplicationController
   def prepare_video(video)
     video_hash = {
       playing: video.playing
+    }
+  end
+
+  def prepare_controls_for_video(video)
+    video_hash = {
+      played: video.played
     }
   end
 
