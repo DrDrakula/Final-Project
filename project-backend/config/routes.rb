@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   post '/chatrooms/:chatroom_id/play_video', to: 'chatrooms#play_video'
   post '/chatrooms/:chatroom_id/control_video', to: 'chatrooms#control_video'
   post '/chatrooms/:chatroom_id/change_video', to: 'chatrooms#change_video'
+  patch '/videos/:video_id', to: 'videos#update'
 
   # Serve websocket cable requests in-process
   mount ActionCable.server => '/cable'

@@ -8,8 +8,6 @@ import { connect } from 'react-redux'
 import { getAllChatRooms,logIn, logOut } from './actions'
 import ChatRoomContainer from './components/ChatRoomContainer'
 
-const API_KEY= 'GET THE KEY'
-
 class App extends Component {
 
   toggleLoggedIn = () => {
@@ -27,14 +25,6 @@ class App extends Component {
     fetch('http://localhost:3000')
     .then(res => res.json())
     .then(json => console.log(json))
-  }
-
-  fetchVideos = () => {
-    fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&key=${API_KEY}&q=${'dogs'}&type=video`)
-		.then(res => res.json())
-		.then(videos => {
-			console.log(videos)
-		})
   }
 
   componentDidMount(){

@@ -1,9 +1,10 @@
-let defaultState = {chatRooms: [], loggedIn: false, currentChatRoom: null}
+let defaultState = {chatRooms: [], loggedIn: false, currentChatRoom: null, url: ''}
 
 const GET_ALL_CHATROOMS = 'GET_ALL_CHATROOMS'
 const CREATE_CHATROOM = 'CREATE_CHATROOM'
 const ENTER_CHATROOM = 'ENTER_CHATROOM'
 const LEAVE_CHATROOM = 'LEAVE_CHATROOM'
+const CHANGE_URL = 'CHANGE_URL'
 const LOG_IN = 'LOG_IN'
 const LOG_OUT = 'LOG_OUT'
 
@@ -36,6 +37,9 @@ export default function root(state = defaultState, action){
 
     case LOG_OUT:
       return {...state, loggedIn: false}
+
+    case CHANGE_URL:
+      return {...state, url: action.payload}
 
     default:
       return state

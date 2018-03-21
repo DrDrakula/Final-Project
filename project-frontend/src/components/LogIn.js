@@ -100,8 +100,8 @@ class LogIn extends React.Component {
           </div>
         </div>
         <div className="App">
-          <button onClick={this.logIn}>Log In</button>
-          <button onClick={this.createUser}>Create User</button>
+          <button className="waves-effect waves-light btn red darken-1" onClick={this.logIn}>Log In</button>
+          <button className="waves-effect waves-light btn red darken-1" onClick={this.createUser}>Create User</button>
         </div>
         {this.state.error ?
         <div>

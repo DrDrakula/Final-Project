@@ -8,12 +8,12 @@ import screenfull from 'screenfull'
 import { version } from '../../package.json'
 import { connect } from 'react-redux'
 import { ActionCable } from 'react-actioncable-provider'
-
+import { changeUrl } from '../actions'
 
 class CurrentVideo extends React.Component {
 
   state = {
-    url: 'https://www.youtube.com/watch?v=cmpRLQZkTb8',
+    url: '',
     playing: true,
     volume: 0.8,
     muted: false,
@@ -48,7 +48,7 @@ class CurrentVideo extends React.Component {
     fetch('http://localhost:3000/chatrooms')
     .then(res => res.json())
     .then(json => {
-      console.log(json)
+      console.log('GetVideo', json)
       let currentRoom = json.chatrooms.find(room => room.id = this.props.currentChatRoom.id)
       this.currentRoomVideo = currentRoom.video
       this.setState({
@@ -56,7 +56,10 @@ class CurrentVideo extends React.Component {
         playing: this.currentRoomVideo.playing,
         played: this.currentRoomVideo.played,
         playedSeconds: this.currentRoomVideo.playedSeconds
-      }, () => this.player.seekTo(this.state.playedSeconds))
+      }, () => {
+        console.log('State after get',this.state)
+        this.player.seekTo(this.state.playedSeconds)
+      })
     })
   }
 
@@ -70,6 +73,7 @@ class CurrentVideo extends React.Component {
   }
 
   onLoadPress = (url) => {
+    this.props.changeUrl(url)
     this.setState({
       url: url
     }, () => {
@@ -188,7 +192,6 @@ class CurrentVideo extends React.Component {
   render () {
     const { url, playing, volume, muted, loop, played, loaded, duration, playbackRate } = this.state
     const SEPARATOR = ' · '
-
     return (
       <div className='app'>
         <ActionCable
@@ -225,12 +228,8 @@ class CurrentVideo extends React.Component {
             <tr>
               <th>Controls</th>
               <td>
-                <button onClick={this.stop}>Stop</button>
-                <button onClick={this.playPause}>{playing ? 'Pause' : 'Play'}</button>
-                <button onClick={this.onClickFullscreen}>Fullscreen</button>
-                <button onClick={this.setPlaybackRate} value={1}>1</button>
-                <button onClick={this.setPlaybackRate} value={1.5}>1.5</button>
-                <button onClick={this.setPlaybackRate} value={2}>2</button>
+                <button className="waves-effect waves-light btn red darken-1" onClick={this.playPause}>{playing ? 'Pause' : 'Play'}</button>
+                <button className="waves-effect waves-light btn red darken-1" onClick={this.onClickFullscreen}>Fullscreen</button>
               </td>
             </tr>
             <tr>
@@ -273,10 +272,10 @@ class CurrentVideo extends React.Component {
         <section className='section'>
           <table><tbody>
             <tr>
-              <th>Custom URL</th>
+              <th>Video URL</th>
               <td>
-                <input ref={input => { this.urlInput = input }} type='text' placeholder='Enter URL' />
-                <button onClick={() => this.onLoadPress(this.urlInput.value)/*this.setState({ url: this.urlInput.value })*/}>Load</button>
+                <input id='load-url' ref={input => { this.urlInput = input }} type='text' placeholder='Enter URL' />
+                <button className="waves-effect waves-light btn red darken-1" onClick={() => this.onLoadPress(this.urlInput.value)/*this.setState({ url: this.urlInput.value })*/}>Load</button>
               </td>
             </tr>
           </tbody></table>
@@ -289,8 +288,9 @@ class CurrentVideo extends React.Component {
 const mapStateToProps = (state) => {
   return {
     chatRooms: state.chatRooms,
-    currentChatRoom: state.currentChatRoom
+    currentChatRoom: state.currentChatRoom,
+    url: state.url
   }
 }
 
-export default connect(mapStateToProps)(CurrentVideo);
+export default connect(mapStateToProps, { changeUrl })(CurrentVideo);

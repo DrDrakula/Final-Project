@@ -43,6 +43,14 @@ export function leaveChatRoom(chatRoom){
   }
 }
 
+export function changeUrl(url){
+  console.log('CHANGING URL')
+  return {
+    type: 'CHANGE_URL',
+    payload: url
+  }
+}
+
 export const getAllChatRooms = () => {
   return function(dispatch){
     fetch('http://localhost:3000/chatrooms')

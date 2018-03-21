@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { leaveChatRoom } from '../actions'
 import { ActionCable } from 'react-actioncable-provider'
 import CurrentVideo from './CurrentVideo'
+import YouTubeVideoContainer from './YouTubeVideoContainer'
 
 class ChatRoom extends React.Component{
 
@@ -52,8 +53,8 @@ class ChatRoom extends React.Component{
         let roomsMessages = this.state.roomsMessages
         roomsMessages.push(data.payload)
   			this.setState({roomsMessages: roomsMessages})
-     		break;
-      case 'CONTROL_VIDEO':
+        let element = document.getElementById("chatList");
+        element.scrollTop = element.scrollHeight;
      		break;
       default:
         console.log(data);
@@ -105,9 +106,7 @@ class ChatRoom extends React.Component{
 
 
   render(){
-    //<img alt='yt' className='responsive-img' src={require('../yt.jpg')} height='500'/>
-    // <iframe height='500' width='900' title='*Try Not To Laugh Challenge* Funny Dogs Compilation - Funniest Dog Videos 2017' src={`https://www.youtube.com/embed/aEzZLXBH3rU`}/>
-    return (
+      return (
       <div>
         <ActionCable
           channel={{ channel: 'ChatroomChannel', chatroom_id: this.props.currentChatRoom.id }}
@@ -119,6 +118,7 @@ class ChatRoom extends React.Component{
             <div className='row'>
               <div className='col s8'>
                 <CurrentVideo />
+                <YouTubeVideoContainer />
               </div>
             <div className='col s4' id='chatList'>
                 <ul>
@@ -128,7 +128,7 @@ class ChatRoom extends React.Component{
               <div className='col s4' id='messageInput'>
                 <form onSubmit={(e) => this.sendMesssage(e)}>
                   <input type='text' value={this.state.input} onChange={this.handleInput} placeholder='Type here...'/>
-                  <input type='submit' value='Send Message'/>
+                  <input type='submit' value='Send Message' className="waves-effect waves-light btn red darken-1"/>
                 </form>
               </div>
             </div>
