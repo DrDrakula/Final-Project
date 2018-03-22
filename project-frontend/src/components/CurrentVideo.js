@@ -192,6 +192,7 @@ class CurrentVideo extends React.Component {
   render () {
     const { url, playing, volume, muted, loop, played, loaded, duration, playbackRate } = this.state
     const SEPARATOR = ' · '
+
     return (
       <div className='app'>
         <ActionCable
@@ -230,6 +231,7 @@ class CurrentVideo extends React.Component {
               <td>
                 <button className="waves-effect waves-light btn red darken-1" onClick={this.playPause}>{playing ? 'Pause' : 'Play'}</button>
                 <button className="waves-effect waves-light btn red darken-1" onClick={this.onClickFullscreen}>Fullscreen</button>
+                {Math.round(Math.floor(this.state.playedSeconds / 60))}:{((Math.round(this.state.playedSeconds) % 60) < 10) ? `0${(Math.round(this.state.playedSeconds) % 60)}` : (Math.round(this.state.playedSeconds) % 60)}
               </td>
             </tr>
             <tr>

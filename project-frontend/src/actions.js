@@ -37,6 +37,8 @@ export function enterChatRoom(chatRoom){
 }
 
 export function leaveChatRoom(chatRoom){
+  localStorage.removeItem('currentChatRoom')
+  localStorage.removeItem('chatroom_password')
   console.log('Leaving chatroom:', chatRoom.topic)
   return {
     type: 'LEAVE_CHATROOM'
@@ -80,10 +82,18 @@ export const createChatRoom = (topic, password) => {
     .then(res => res.json())
     .then(json => {
       console.log('Created:',json.chatroom)
-      dispatch({
-        type: 'CREATE_CHATROOM',
-        payload: json.chatroom
-      })
+      if(json.error){
+        console.log(json.error)
+        let span = document.getElementById('error-field')
+        span.innerText = json.error
+      }else{
+        let span = document.getElementById('error-field')
+        span.innerText = ''
+        dispatch({
+          type: 'CREATE_CHATROOM',
+          payload: json.chatroom
+        })
+      }
     })
   }
 }

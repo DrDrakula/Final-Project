@@ -55,15 +55,16 @@ class ChatRooms extends React.Component {
         <div className='container'>
           <form onSubmit={this.handleSubmit}>
             <h5 className="App">Create a new ChatRoom</h5><br/>
+            <span id='error-field'></span>
             <div className='row'>
               <div className="input-field col s6">
                 <input type='text' onChange={this.handleTopicInput} value={this.state.chatRoomTopic} placeholder="Topic"/><br/>
               </div>
               <div className="input-field col s6">
-                <input type='password' onChange={this.handlePasswordInput} value={this.state.chatRoomPassword} placeholder="Password"/><br/>
+                <input type='password' onChange={this.handlePasswordInput} value={this.state.chatRoomPassword} placeholder="Password (optional)"/><br/>
               </div>
             </div>
-            <input type='submit' value='create room'/>
+            <input type='submit' className="waves-effect waves-light btn red darken-1" value='create room'/>
           </form>
           <br/>
           <h5 className="App">Join an existing ChatRoom</h5>

@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 const API_KEY = 'AIzaSyB5GLM0ZcS3MwmMbazTcz4qKL867jJlP-w'
 
@@ -54,7 +53,7 @@ class YouTubeVideoContainer extends React.Component {
 
         <section>
           <table><tbody>
-            {this.state.videos.map(video => <tr key={video.id.videoId} onClick={() => this.getLoadUrl(`https://www.youtube.com/embed/${video.id.videoId}`)}><th><img src={video.snippet.thumbnails.default.url} /></th><td>{video.snippet.title}</td></tr>)}
+            {this.state.videos.map(video => <tr key={video.id.videoId} onClick={() => this.getLoadUrl(`https://www.youtube.com/watch?v=${video.id.videoId}`)}><th><img src={video.snippet.thumbnails.default.url} /></th><td>{video.snippet.title}</td></tr>)}
           </tbody></table>
         </section>
 

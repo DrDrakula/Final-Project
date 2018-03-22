@@ -11,7 +11,7 @@ class ChatRoom extends React.Component{
     roomsMessages: [],
     input: '',
     passwordInput: '',
-    approved: true
+    approved: false
   }
 
   getAllMessages = (chatRoomId) => {
@@ -41,8 +41,9 @@ class ChatRoom extends React.Component{
 
   componentDidMount(){
     localStorage.setItem('chatroom_id', this.props.currentChatRoom.id)
-    this.getAllMessages(this.props.currentChatRoom.id)
-
+    if(localStorage.getItem('chatroom_password') || !this.props.currentChatRoom.password){
+      this.setState({approved: true},() => this.getAllMessages(this.props.currentChatRoom.id))
+    }
   }
 
   handleSocketResponse = (data) => {
@@ -97,9 +98,12 @@ class ChatRoom extends React.Component{
   handleJoinRoom = (event) => {
     event.preventDefault()
     if(this.state.passwordInput === this.props.currentChatRoom.password){
+      localStorage.setItem('chatroom_password', this.state.passwordInput)
       this.setState({
         approved: true,
         passwordInput: ''
+      }, () => {
+        this.getAllMessages(this.props.currentChatRoom.id)
       })
     }
   }
@@ -121,23 +125,23 @@ class ChatRoom extends React.Component{
                 <YouTubeVideoContainer />
               </div>
             <div className='col s4' id='chatList'>
-                <ul>
-                  {this.state.roomsMessages.map(message => <li key={message.id}><strong>{message.username ? message.username : message.user.username}:</strong> {message.content}</li>)}
-                </ul>
-              </div>
-              <div className='col s4' id='messageInput'>
-                <form onSubmit={(e) => this.sendMesssage(e)}>
-                  <input type='text' value={this.state.input} onChange={this.handleInput} placeholder='Type here...'/>
-                  <input type='submit' value='Send Message' className="waves-effect waves-light btn red darken-1"/>
-                </form>
-              </div>
+              <ul>
+                {this.state.roomsMessages.map(message => <li key={message.id}><strong>{message.username ? message.username : message.user.username}:</strong> {message.content}</li>)}
+              </ul>
             </div>
+            <div className='col s4' id='messageInput'>
+              <form onSubmit={(e) => this.sendMesssage(e)}>
+                <input type='text' value={this.state.input} onChange={this.handleInput} placeholder='Type here...'/>
+                <input type='submit' value='Send Message' className="waves-effect waves-light btn red darken-1"/>
+              </form>
+            </div>
+          </div>
           :
-            <form onSubmit={this.handleJoinRoom}>
-              <input type='password' placeholder='Password' value={this.state.passwordInput} onChange={this.handlePasswordInput}/>
-              <input type='submit' value='Join'/>
-            </form>
-          }
+          <form className='App' onSubmit={this.handleJoinRoom}>
+            <input type='password' placeholder='Password' value={this.state.passwordInput} onChange={this.handlePasswordInput}/>
+            <input type='submit' className="waves-effect waves-light btn red darken-1" value='Join'/>
+          </form>
+        }
         </div>
       </div>
     )
