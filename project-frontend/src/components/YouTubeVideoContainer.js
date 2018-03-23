@@ -1,6 +1,8 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { toggleUrlField } from '../actions'
 
-const API_KEY = 'AIzaSyB5GLM0ZcS3MwmMbazTcz4qKL867jJlP-w'
+const API_KEY = 'GET YOUR OWN KEY'
 
 class YouTubeVideoContainer extends React.Component {
 
@@ -24,9 +26,13 @@ class YouTubeVideoContainer extends React.Component {
 
   getLoadUrl = (text) => {
     let input = document.getElementById('load-url')
-    console.log(text)
-    console.log(input)
-    input.value = text
+    if(input){
+      console.log(text)
+      console.log(input)
+      input.value = text
+    }else{
+      this.props.toggleUrlField(this.props.urlField)
+    }
   }
 
   componentDidMount(){
@@ -50,16 +56,20 @@ class YouTubeVideoContainer extends React.Component {
             </tr>
           </tbody></table>
         </section>
-
-        <section>
-          <table><tbody>
+        <div>
+          <table className="highlight"><tbody>
             {this.state.videos.map(video => <tr key={video.id.videoId} onClick={() => this.getLoadUrl(`https://www.youtube.com/watch?v=${video.id.videoId}`)}><th><img src={video.snippet.thumbnails.default.url} /></th><td>{video.snippet.title}</td></tr>)}
           </tbody></table>
-        </section>
-
+        </div>
       </div>
     )
   }
 }
 
-export default YouTubeVideoContainer;
+const mapStateToProps = (state) => {
+  return {
+    urlField: state.urlField
+  }
+}
+
+export default connect(mapStateToProps, {toggleUrlField})(YouTubeVideoContainer);

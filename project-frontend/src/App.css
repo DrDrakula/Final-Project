@@ -34,13 +34,13 @@
   overscroll-behavior-y: contain;
   max-height: 400px;
 }
-
+/* 
 #messageInput {
   position: absolute;
   bottom: 0;
   right: 0;
   margin-bottom: 5%;
-}
+} */
 
 input[type=range] {
   -webkit-appearance: none;

@@ -28,6 +28,14 @@ export function logOut(){
   }
 }
 
+export function toggleUrlField(toggleUrl){
+  console.log(`Toggling from ${toggleUrl} to ${!toggleUrl}`)
+  return {
+    type: 'TOGGLE_URL_FIELD',
+    payload: !toggleUrl
+  }
+}
+
 export function enterChatRoom(chatRoom){
   console.log('Entering chatroom:', chatRoom.topic)
   return {

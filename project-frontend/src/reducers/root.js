@@ -1,4 +1,4 @@
-let defaultState = {chatRooms: [], loggedIn: false, currentChatRoom: null, url: ''}
+let defaultState = {chatRooms: [], loggedIn: false, currentChatRoom: null, url: '', urlField: true}
 
 const GET_ALL_CHATROOMS = 'GET_ALL_CHATROOMS'
 const CREATE_CHATROOM = 'CREATE_CHATROOM'
@@ -7,6 +7,7 @@ const LEAVE_CHATROOM = 'LEAVE_CHATROOM'
 const CHANGE_URL = 'CHANGE_URL'
 const LOG_IN = 'LOG_IN'
 const LOG_OUT = 'LOG_OUT'
+const TOGGLE_URL_FIELD = 'TOGGLE_URL_FIELD'
 
 export default function root(state = defaultState, action){
 
@@ -40,6 +41,9 @@ export default function root(state = defaultState, action){
 
     case CHANGE_URL:
       return {...state, url: action.payload}
+
+    case TOGGLE_URL_FIELD:
+      return {...state, urlField: action.payload}
 
     default:
       return state

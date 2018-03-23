@@ -122,7 +122,6 @@ class ChatRoom extends React.Component{
             <div className='row'>
               <div className='col s8'>
                 <CurrentVideo />
-                <YouTubeVideoContainer />
               </div>
             <div className='col s4' id='chatList'>
               <ul>
@@ -134,6 +133,7 @@ class ChatRoom extends React.Component{
                 <input type='text' value={this.state.input} onChange={this.handleInput} placeholder='Type here...'/>
                 <input type='submit' value='Send Message' className="waves-effect waves-light btn red darken-1"/>
               </form>
+              <YouTubeVideoContainer />
             </div>
           </div>
           :

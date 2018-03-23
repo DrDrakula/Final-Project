@@ -6,9 +6,9 @@ import { findDOMNode } from 'react-dom'
 import { hot } from 'react-hot-loader'
 import screenfull from 'screenfull'
 import { version } from '../../package.json'
-import { connect } from 'react-redux'
 import { ActionCable } from 'react-actioncable-provider'
-import { changeUrl } from '../actions'
+import { connect } from 'react-redux'
+import { changeUrl, toggleUrlField } from '../actions'
 
 class CurrentVideo extends React.Component {
 
@@ -23,6 +23,10 @@ class CurrentVideo extends React.Component {
     loop: false,
     played: 0,
     playedSeconds: 0
+  }
+
+  handleUrlField = () => {
+    this.props.toggleUrlField(this.props.urlField)
   }
 
   handleSocketResponse = (data) => {
@@ -231,9 +235,21 @@ class CurrentVideo extends React.Component {
               <td>
                 <button className="waves-effect waves-light btn red darken-1" onClick={this.playPause}>{playing ? 'Pause' : 'Play'}</button>
                 <button className="waves-effect waves-light btn red darken-1" onClick={this.onClickFullscreen}>Fullscreen</button>
+                <button className="waves-effect waves-light btn red darken-1" onClick={this.handleUrlField}>{this.props.urlField ? 'Hide URL field' : 'Show URL Field'}</button>
                 {Math.round(Math.floor(this.state.playedSeconds / 60))}:{((Math.round(this.state.playedSeconds) % 60) < 10) ? `0${(Math.round(this.state.playedSeconds) % 60)}` : (Math.round(this.state.playedSeconds) % 60)}
               </td>
             </tr>
+            {!this.props.urlField ?
+              null
+              :
+              <tr>
+                <th>URL Field</th>
+                <td>
+                  <input id='load-url' ref={input => { this.urlInput = input }} type='text' placeholder='Enter URL' />
+                  <button className="waves-effect waves-light btn red darken-1" onClick={() => this.onLoadPress(this.urlInput.value)/*this.setState({ url: this.urlInput.value })*/}>Load</button>
+                </td>
+              </tr>
+            }
             <tr>
               <th>Seek</th>
               <td>
@@ -272,15 +288,7 @@ class CurrentVideo extends React.Component {
           </tbody></table>
         </section>
         <section className='section'>
-          <table><tbody>
-            <tr>
-              <th>Video URL</th>
-              <td>
-                <input id='load-url' ref={input => { this.urlInput = input }} type='text' placeholder='Enter URL' />
-                <button className="waves-effect waves-light btn red darken-1" onClick={() => this.onLoadPress(this.urlInput.value)/*this.setState({ url: this.urlInput.value })*/}>Load</button>
-              </td>
-            </tr>
-          </tbody></table>
+
         </section>
       </div>
     )
@@ -291,8 +299,9 @@ const mapStateToProps = (state) => {
   return {
     chatRooms: state.chatRooms,
     currentChatRoom: state.currentChatRoom,
-    url: state.url
+    url: state.url,
+    urlField: state.urlField
   }
 }
 
-export default connect(mapStateToProps, { changeUrl })(CurrentVideo);
+export default connect(mapStateToProps, { changeUrl, toggleUrlField })(CurrentVideo);
