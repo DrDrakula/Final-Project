@@ -128,6 +128,13 @@ class ChatroomsController < ApplicationController
     render json: @chatroom
   end
 
+  def destroy
+    @chatroom = Chatroom.find_by(id: params[:id])
+    topic = @chatroom.topic
+    @chatroom.destroy
+    render json: `Chatroom #{topic} has been deleted`
+  end
+
   private
 
     def chatroom_params

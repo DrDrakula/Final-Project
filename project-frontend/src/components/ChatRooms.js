@@ -1,7 +1,7 @@
 import React from 'react'
 import ChatRoom from './ChatRoom'
 import {connect} from 'react-redux'
-import { createChatRoom, logOut } from '../actions'
+import { createChatRoom, logOut, deleteChatRoom } from '../actions'
 import {NavLink} from 'react-router-dom'
 
 
@@ -51,31 +51,54 @@ class ChatRooms extends React.Component {
     let filteredRooms = sortedRooms.filter(room => room.topic.toLowerCase().includes(this.state.filterRooms.toLowerCase()))
     return(
       <div>
-        {!this.props.currentChatRoom ?
-        <div className='container'>
-          <form onSubmit={this.handleSubmit}>
-            <h5 className="App">Create a new ChatRoom</h5><br/>
-            <span id='error-field'></span>
-            <div className='row'>
-              <div className="input-field col s6">
-                <input type='text' onChange={this.handleTopicInput} value={this.state.chatRoomTopic} placeholder="Topic"/><br/>
+        {
+          !this.props.currentChatRoom
+          ?
+          <div className='container chatroom-hub'>
+
+            <div className="row">
+
+              <div className="col s6">
+                <h5>Create a new chat room</h5><br/>
+                  <div className='row'>
+                    <form onSubmit={this.handleSubmit}>
+                      <span id='error-field'></span>
+
+                        <div className="input-field col s6">
+                          <input type='text' onChange={this.handleTopicInput} value={this.state.chatRoomTopic} placeholder="Topic"/><br/>
+                          <input type='password' onChange={this.handlePasswordInput} value={this.state.chatRoomPassword} placeholder="Password (optional)"/><br/><br/>
+                          <input type='submit' className="waves-effect waves-light btn red darken-1" value='create room'/>
+                      </div>
+
+                    </form>
+                  </div>
               </div>
-              <div className="input-field col s6">
-                <input type='password' onChange={this.handlePasswordInput} value={this.state.chatRoomPassword} placeholder="Password (optional)"/><br/>
+
+              <div className="col s6">
+                <h5>Join an existing chat room</h5><br/>
+                  <div className='row'>
+                    <div className="input-field col s12">
+                      <input type='text' value={this.state.filterRooms} onChange={this.handleFilterInput} placeholder='Search for chat rooms'/>
+                      <ul className='collection'>
+                        {this.props.chatRooms ? filteredRooms.map(room => <li className='collection-item' key={room.id}><NavLink to={`/chatrooms/${room.slug}`}>{room.topic}</NavLink><a className='secondary-content' ><i onClick={() => this.props.deleteChatRoom(room)} className='material-icons'>delete_forever</i></a></li>) : null}
+                      </ul>
+                    </div>
+                  </div>
               </div>
             </div>
-            <input type='submit' className="waves-effect waves-light btn red darken-1" value='create room'/>
-          </form>
-          <br/>
-          <h5 className="App">Join an existing ChatRoom</h5>
-          <input type='text' className="App" value={this.state.filterRooms} onChange={this.handleFilterInput} placeholder='Search for rooms'/>
-          <ul className='collection App'>
-            {this.props.chatRooms ? filteredRooms.map(room => <li className='collection-item' key={room.id}><NavLink to={`/chatrooms/${room.slug}`}>{room.topic}</NavLink></li>) : null}
-          </ul>
-        </div>
-      :
-      <ChatRoom />
-      }
+
+
+
+
+
+
+
+
+
+          </div>
+          :
+          <ChatRoom />
+        }
       </div>
     )
   }
@@ -88,4 +111,31 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, {createChatRoom, logOut})(ChatRooms);
+export default connect(mapStateToProps, {createChatRoom, logOut, deleteChatRoom})(ChatRooms);
+
+// <div className="row">
+//   <div className="col s6">
+//     <h5>Create a new chat room</h5><br/>
+//     <div className='row'>
+//       <form onSubmit={this.handleSubmit}>
+//         <span id='error-field'></span>
+//
+//           <div className="input-field col s6">
+//             <input type='text' onChange={this.handleTopicInput} value={this.state.chatRoomTopic} placeholder="Topic"/><br/>
+//             <input type='password' onChange={this.handlePasswordInput} value={this.state.chatRoomPassword} placeholder="Password (optional)"/><br/>
+//             <input type='submit' className="waves-effect waves-light btn red darken-1" value='create room'/>
+//         </div>
+//
+//       </form>
+//     </div>
+//   </div>
+//   <div className="col s6">
+//     <h5>Join an existing chat room</h5><br/>
+//     <div className="row">
+//       <input type='text' value={this.state.filterRooms} onChange={this.handleFilterInput} placeholder='Search for chat rooms'/>
+//       <ul className='collection'>
+//         {this.props.chatRooms ? filteredRooms.map(room => <li className='collection-item' key={room.id}><NavLink to={`/chatrooms/${room.slug}`}>{room.topic}</NavLink><a className='secondary-content' ><i onClick={() => this.props.deleteChatRoom(room)} className='material-icons'>delete_forever</i></a></li>) : null}
+//       </ul>
+//     </div>
+//   </div>
+// </div>

@@ -8,6 +8,7 @@ const CHANGE_URL = 'CHANGE_URL'
 const LOG_IN = 'LOG_IN'
 const LOG_OUT = 'LOG_OUT'
 const TOGGLE_URL_FIELD = 'TOGGLE_URL_FIELD'
+const DELETE_CHATROOM = 'DELETE_CHATROOM'
 
 export default function root(state = defaultState, action){
 
@@ -32,6 +33,10 @@ export default function root(state = defaultState, action){
       return {
         ...state, currentChatRoom: null
       }
+
+    case DELETE_CHATROOM:
+      let newRooms = state.chatRooms.filter(chatroom => chatroom.id !== action.payload.id)
+      return {...state, chatRooms: newRooms}
 
     case LOG_IN:
       return {...state, loggedIn: true}

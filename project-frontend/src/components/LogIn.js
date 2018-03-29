@@ -91,18 +91,32 @@ class LogIn extends React.Component {
   render () {
     return(
       <div className='container'>
-        <div className='row'>
-          <div className="input-field col s6">
-            <input type='text' value={this.state.username} onChange={this.handleUsernameInput} placeholder='Username'/><br/>
+        <div className="row hero">
+
+          <div className="col s6">
+            <h2>Welcome to WeWatch!</h2>
+            <h5>An app that you can use with your friends <br/>to watch online videos together.</h5>
+            <p>Please log in or create a new user.</p>
           </div>
-          <div className="input-field col s6">
-            <input type='password' value={this.state.password} onChange={this.handlePasswordInput} placeholder='Password'/><br/>
+
+          <div className="col s6 hero-right">
+            <div className="row">
+              <div className="col s6 offset-s2">
+                <div className="input-field">
+                  <input type='text' value={this.state.username} onChange={this.handleUsernameInput} placeholder='Username'/><br/>
+                  <input type='password' value={this.state.password} onChange={this.handlePasswordInput} placeholder='Password'/><br/>
+                </div>
+                <br/>
+                <div>
+                  <button className="waves-effect waves-light btn red darken-1" onClick={this.logIn}>Log In</button>
+                  <button className="waves-effect waves-red darken-1 btn-flat" onClick={this.createUser}>Create User</button>
+                </div>
+              </div>
+            </div>
           </div>
+
         </div>
-        <div className="App">
-          <button className="waves-effect waves-light btn red darken-1" onClick={this.logIn}>Log In</button>
-          <button className="waves-effect waves-light btn red darken-1" onClick={this.createUser}>Create User</button>
-        </div>
+
         {this.state.error ?
         <div>
           <ul>
@@ -123,3 +137,8 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, {logIn, logOut})(LogIn);;
+
+
+// <div className="input-field col s6">
+//   <input type='password' value={this.state.password} onChange={this.handlePasswordInput} placeholder='Password'/><br/>
+// </div>

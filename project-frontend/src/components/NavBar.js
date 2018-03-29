@@ -17,11 +17,13 @@ const NavBar = (props) => {
   return (
     <nav>
       <div className="nav-wrapper red darken-1">
-        {props.loggedIn ? <NavLink className="brand-logo right" onClick={props.leaveChatRoom} to="/">{localStorage.getItem('username')}</NavLink> : null}
-        <ul id="nav-mobile" className="left hide-on-med-and-down">
-          <li><NavLink to='/' onClick={props.leaveChatRoom}>Chatrooms</NavLink></li>
-          <li>{props.loggedIn ? <NavLink to='/' onClick={onLogOutClick}>Log Out</NavLink> : <NavLink to='/'>Log In</NavLink>}</li>
-        </ul>
+        <div className="container">
+          {props.loggedIn ? <NavLink className="right" onClick={props.leaveChatRoom} to="/">{localStorage.getItem('username')}</NavLink> : null}
+          <ul id="nav-mobile" className="left hide-on-med-and-down">
+            <li><NavLink to='/' onClick={props.leaveChatRoom}>Chatrooms</NavLink></li>
+            <li>{props.loggedIn ? <NavLink to='/' onClick={onLogOutClick}>Log Out</NavLink> : <NavLink to='/'>Log In</NavLink>}</li>
+          </ul>
+        </div>
       </div>
     </nav>
   )

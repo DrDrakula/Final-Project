@@ -13,8 +13,8 @@ import { changeUrl, toggleUrlField } from '../actions'
 class CurrentVideo extends React.Component {
 
   state = {
-    url: '',
-    playing: true,
+    url: 'https://www.youtube.com/watch?v=BfKN4YjfKZA',
+    playing: false,
     volume: 0.8,
     muted: false,
     loaded: 0,
@@ -233,10 +233,11 @@ class CurrentVideo extends React.Component {
             <tr>
               <th>Controls</th>
               <td>
-                <button className="waves-effect waves-light btn red darken-1" onClick={this.playPause}>{playing ? 'Pause' : 'Play'}</button>
-                <button className="waves-effect waves-light btn red darken-1" onClick={this.onClickFullscreen}>Fullscreen</button>
-                <button className="waves-effect waves-light btn red darken-1" onClick={this.handleUrlField}>{this.props.urlField ? 'Hide URL field' : 'Show URL Field'}</button>
-                {Math.round(Math.floor(this.state.playedSeconds / 60))}:{((Math.round(this.state.playedSeconds) % 60) < 10) ? `0${(Math.round(this.state.playedSeconds) % 60)}` : (Math.round(this.state.playedSeconds) % 60)}
+                <button className="waves-effect waves-light btn red darken-1" onClick={this.playPause}>{playing ? <i className='material-icons'>pause</i> : <i className='material-icons'>play_arrow</i>}</button>
+                <button className="btn-flat">{Math.round(Math.floor(this.state.playedSeconds / 60))}:{((Math.round(this.state.playedSeconds) % 60) < 10) ? `0${(Math.round(this.state.playedSeconds) % 60)}` : (Math.round(this.state.playedSeconds) % 60)}</button>
+
+                <button className="waves-effect waves-red btn-flat" onClick={this.onClickFullscreen}><i className='material-icons'>fullscreen</i></button>
+                <button className="waves-effect waves-red btn-flat" onClick={this.handleUrlField}>{this.props.urlField ? 'Hide URL field' : 'Show URL Field'}</button>
               </td>
             </tr>
             {!this.props.urlField ?

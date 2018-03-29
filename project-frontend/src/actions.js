@@ -106,6 +106,28 @@ export const createChatRoom = (topic, password) => {
   }
 }
 
+export const deleteChatRoom = (room) => {
+  return function(dispatch){
+    fetch(`http://localhost:3000/chatrooms/${room.id}`, {
+      method:"DELETE",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: room.id
+      })
+    })
+    .then(res => res.json())
+    .then(json => {
+      console.log('Deleted:',room)
+      dispatch({
+        type:'DELETE_CHATROOM',
+        payload: room
+      })
+    })
+  }
+}
+
 export const getAllMessages = (chatRoomId) => {
   return function(dispatch){
     fetch('http://localhost:3000/messages', {

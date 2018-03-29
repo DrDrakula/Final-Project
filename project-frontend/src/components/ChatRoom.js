@@ -116,32 +116,36 @@ class ChatRoom extends React.Component{
           channel={{ channel: 'ChatroomChannel', chatroom_id: this.props.currentChatRoom.id }}
           onReceived={this.handleSocketResponse}
         />
-        <div>
-          <h5 className='App'>{this.props.currentChatRoom.topic}</h5>
-          {this.state.approved ?
+      <div className="container">
+          <h5 className='chat-room-title'>{this.props.currentChatRoom.topic}</h5>
+          {
+            this.state.approved
+            ?
             <div className='row'>
               <div className='col s8'>
                 <CurrentVideo />
               </div>
-            <div className='col s4' id='chatList'>
-              <ul>
-                {this.state.roomsMessages.map(message => <li key={message.id}><strong>{message.username ? message.username : message.user.username}:</strong> {message.content}</li>)}
-              </ul>
+              <div className='col s4' id='chatList'>
+                <ul>
+                  {this.state.roomsMessages.map(message => <li key={message.id}><strong>{message.username ? message.username : message.user.username}:</strong> {message.content}</li>)}
+                </ul>
+              </div>
+              <div className='col s4 send-message'>
+                <form onSubmit={(e) => this.sendMesssage(e)}>
+                  <input type='text' value={this.state.input} onChange={this.handleInput} placeholder='Type here...'/>
+                  <input type='submit' value='Send Message' className="waves-effect waves-light btn red darken-1"/>
+                </form>
+              </div>
+              <div className='col s4'>
+                <YouTubeVideoContainer />
+              </div>
             </div>
-            <div className='col s4' id='messageInput'>
-              <form onSubmit={(e) => this.sendMesssage(e)}>
-                <input type='text' value={this.state.input} onChange={this.handleInput} placeholder='Type here...'/>
-                <input type='submit' value='Send Message' className="waves-effect waves-light btn red darken-1"/>
-              </form>
-              <YouTubeVideoContainer />
-            </div>
-          </div>
-          :
-          <form className='App' onSubmit={this.handleJoinRoom}>
-            <input type='password' placeholder='Password' value={this.state.passwordInput} onChange={this.handlePasswordInput}/>
-            <input type='submit' className="waves-effect waves-light btn red darken-1" value='Join'/>
-          </form>
-        }
+            :
+            <form className='container App' onSubmit={this.handleJoinRoom}>
+              <input type='password' className='App' placeholder='Password' value={this.state.passwordInput} onChange={this.handlePasswordInput}/>
+              <input type='submit' className="waves-effect waves-light btn red darken-1" value='Join'/>
+            </form>
+          }
         </div>
       </div>
     )

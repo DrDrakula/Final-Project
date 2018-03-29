@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { toggleUrlField } from '../actions'
 
-const API_KEY = 'GET YOUR OWN KEY'
+const API_KEY = 'AIzaSyB5GLM0ZcS3MwmMbazTcz4qKL867jJlP-w'
 
 class YouTubeVideoContainer extends React.Component {
 
@@ -40,22 +40,22 @@ class YouTubeVideoContainer extends React.Component {
 
   render () {
     return (
-      <div>
-        <section>
-          <table><tbody>
+      <div className="searchYoutube">
+        <table>
+          <tbody>
             <tr>
-              <th>Search YouTube</th>
               <td>
                 <form onSubmit={(event) => {
                   event.preventDefault()
                   this.fetchVideos(this.state.search)}
                 }>
                   <input type='text' value={this.state.search} onChange={this.handleInput} placeholder='Search YouTube'/>
-                </form>
+                  <input className="waves-effect waves-light btn red darken-1" type='submit' value="Search" />
+              </form>
               </td>
             </tr>
-          </tbody></table>
-        </section>
+          </tbody>
+        </table>
         <div>
           <table className="highlight"><tbody>
             {this.state.videos.map(video => <tr key={video.id.videoId} onClick={() => this.getLoadUrl(`https://www.youtube.com/watch?v=${video.id.videoId}`)}><th><img src={video.snippet.thumbnails.default.url} /></th><td>{video.snippet.title}</td></tr>)}
