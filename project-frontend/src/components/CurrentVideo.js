@@ -13,7 +13,7 @@ import { changeUrl, toggleUrlField } from '../actions'
 class CurrentVideo extends React.Component {
 
   state = {
-    url: 'https://www.youtube.com/watch?v=BfKN4YjfKZA',
+    url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     playing: false,
     volume: 0.8,
     muted: false,
@@ -56,13 +56,7 @@ class CurrentVideo extends React.Component {
       let currentRoom = json.chatrooms.find(room => room.id = this.props.currentChatRoom.id)
       this.currentRoomVideo = currentRoom.video
       this.setState({
-        url: this.currentRoomVideo.url,
-        playing: this.currentRoomVideo.playing,
-        played: this.currentRoomVideo.played,
-        playedSeconds: this.currentRoomVideo.playedSeconds
-      }, () => {
-        console.log('State after get',this.state)
-        this.player.seekTo(this.state.playedSeconds)
+        url: this.currentRoomVideo.url
       })
     })
   }
