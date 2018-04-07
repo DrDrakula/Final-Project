@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { toggleUrlField } from '../actions'
 
-const API_KEY = 'KEY'
+const API_KEY = 'GET_YOUR_KEY'
 
 class YouTubeVideoContainer extends React.Component {
 

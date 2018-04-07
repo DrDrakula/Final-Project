@@ -10,7 +10,7 @@ class ChatroomsController < ApplicationController
     @chatroom = Chatroom.new(chatroom_params)
     if @chatroom.valid?
       @chatroom.save
-      @video = Video.create(url: 'https://www.youtube.com/watch?v=cmpRLQZkTb8', played: 0, playedSeconds: 0, playing: true, chatroom_id: @chatroom.id)
+      @video = Video.create(url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', played: 0, playedSeconds: 0, playing: true, chatroom_id: @chatroom.id)
       render json: @chatroom
       # render json: {chatroom: @chatroom, video: @video}
     else

@@ -56,7 +56,7 @@ class CurrentVideo extends React.Component {
       let currentRoom = json.chatrooms.find(room => room.id = this.props.currentChatRoom.id)
       this.currentRoomVideo = currentRoom.video
       this.setState({
-        url: this.currentRoomVideo.url
+        url: this.currentRoomVideo.url,
       })
     })
   }
@@ -210,7 +210,7 @@ class CurrentVideo extends React.Component {
               playbackRate={playbackRate}
               volume={volume}
               muted={muted}
-              onReady={() => /*this.getVideo()*/console.log('onReady')}
+              onReady={() => console.log('onReady')}
               onStart={() => console.log('onStart')}
               onPlay={this.onPlay}
               onPause={this.onPause}
