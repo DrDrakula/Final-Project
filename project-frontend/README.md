@@ -10,8 +10,3 @@ This app was made specifically to allow people, who live far away from each othe
 ## Sending Feedback
 
 I am always open to [your feedback](https://github.com/DrDrakula/WeWatch/issues).
-
-
-## Screenshots
-
-![alt text]("/log_in.png")
