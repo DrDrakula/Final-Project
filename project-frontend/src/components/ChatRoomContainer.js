@@ -36,7 +36,7 @@ class ChatRoomContainer extends React.Component {
     return comp
   }
 
-  componentWillUnmoun(){
+  componentWillUnmount(){
     this.props.leaveChatRoom()
   }
 }
